@@ -2,12 +2,15 @@ package it.polito.tdp.libretto.model;
 
 import java.util.*;
 
+import it.polito.tdp.db.VotoDAO;
+
 public class Libretto {
 
 	private List<Voto> voti;
 
 	public Libretto() {
-		this.voti=new ArrayList<Voto>();
+		VotoDAO dao = new VotoDAO();
+		this.voti=dao.listVoti();
 	}
 
 	/**
@@ -22,6 +25,8 @@ public class Libretto {
 			throw new IllegalArgumentException("Voto errato: "+v);
 		}
 		System.out.println("Aggiunto");
+		VotoDAO dao = new VotoDAO();
+		dao.createVoto(v);
 		return this.voti.add(v);
 	}
 	
@@ -29,6 +34,14 @@ public class Libretto {
 		for (Voto v : this.voti) {
 			System.out.println(v);
 		}
+	}
+	
+	public String toString() {
+		String txt = "";
+		for (Voto v : this.voti) {
+			txt = txt+v.toString()+"\n";
+		}
+		return txt;
 	}
 	
 	public void stampaPuntiUguali(int valore) {
@@ -90,15 +103,36 @@ public class Libretto {
 	}
 	
 	public void cancellaVotiInferiori(int punti) {
+		List<Voto> daCancellare = new ArrayList<Voto>();
 		for (Voto v : this.voti) {
 			if (v.getPunti()<punti) {
-				this.voti.remove(v);
+				daCancellare.add(v);
 			}
 		}
-		for (int i=0;i<this.voti.size();i++) {
-			if(this.voti.get(i).getPunti()<punti) {
-				this.voti.remove(i);
+//		for (Voto v1 : daCancellare) {
+//			this.voti.remove(v1);
+//		}
+		this.voti.removeAll(daCancellare);
+	}
+	
+	public Libretto librettoOrdinatoAlfabeticamente() {
+		Libretto ordinato = new Libretto();
+		ordinato.voti = new ArrayList<>(this.voti);
+		ordinato.voti.sort(new ComparatorByName());
+		return ordinato;
+	}
+	
+	public Libretto librettoOrdinatoPerVoto() {
+		Libretto ordinato = new Libretto();
+		ordinato.voti = new ArrayList<>(this.voti);
+		ordinato.voti.sort(new Comparator<Voto>() {
+
+			@Override
+			public int compare(Voto o1, Voto o2) {
+				return -(o1.getPunti()-o2.getPunti());
 			}
-		}
+			
+		});
+		return ordinato;
 	}
 }

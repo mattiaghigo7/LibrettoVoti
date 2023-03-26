@@ -56,7 +56,16 @@ public class TestLibretto {
 		
 		//Punto 8
 		System.out.println("\n8)");
+		System.out.println("LIBRETTO ORDINATO PER NOME");
+		lib.librettoOrdinatoAlfabeticamente().stampa();
+		System.out.println("LIBRETTO ORDINATO PER VOTO");
+		lib.librettoOrdinatoPerVoto().stampa();
 		
+		//Punto 9
+		System.out.println("\n9)");
+		System.out.println("LIBRETTO ORIGINARIO >=24");
+		lib.cancellaVotiInferiori(24);
+		lib.stampa();
 	}
 
 }

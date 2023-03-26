@@ -2,7 +2,7 @@ package it.polito.tdp.libretto.model;
 
 import java.time.LocalDate;
 
-public class Voto {
+public class Voto{
 
 	private String corso;
 	private int punti;
@@ -60,6 +60,5 @@ public class Voto {
 	public String toString() {
 		return corso + " (" + punti + "pt) il " + dataEsame;
 	}
-	
-	
+
 }
